@@ -1,12 +1,16 @@
 package com.example.springmvcboot;
 
-import com.example.springmvcboot.model.Alien;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.springmvcboot.model.Alien;
 
 @Controller
 public class HomeController {
@@ -25,9 +29,16 @@ public class HomeController {
     return "result";
   }
 
-  @GetMapping("addAlien")
+  @GetMapping("/addAlien")
   public String addAlien(@ModelAttribute("alien") Alien a) {
     return "result";
+  }
+
+  @GetMapping("/getAliens")
+  public String getAliens(Model m) {
+    List<Alien> alienList = Arrays.asList(new Alien(101, "sai"), new Alien(102, "kiran"));
+    m.addAttribute("result", alienList);
+    return "showAliens";
   }
 
   @ModelAttribute
