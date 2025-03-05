@@ -26,7 +26,7 @@ public class AlienRestController {
     private AlienRepository alienRepository;
 
     // Get all aliens
-    @GetMapping
+    @GetMapping(produces = {"application/xml"})
     public List<Alien> getAllAliens() {
         return alienRepository.findAll();
     }
