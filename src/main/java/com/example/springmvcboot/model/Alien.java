@@ -1,12 +1,17 @@
 package com.example.springmvcboot.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
 public class Alien {
 	@Id
+	@JsonProperty("id")  // This will make the field appear as "id" in JSON
 	private int aid;
+
+	@JsonProperty("name")  // This will make the field appear as "name" in JSON
 	private String aname;
 
 	// Default constructor required by JPA
