@@ -9,7 +9,6 @@
 <body>
 
     <h1>Welcome ${name}</h1>
-	Result is : ${sum}
 	Result is : ${alien}
 </body>
 </html>

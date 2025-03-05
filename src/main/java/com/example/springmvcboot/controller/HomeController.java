@@ -1,4 +1,4 @@
-package com.example.springmvcboot;
+package com.example.springmvcboot.controller;
 
 import java.util.List;
 
@@ -44,6 +44,18 @@ public class HomeController {
     List<Alien> alienList = (List<Alien>) alienRepository.findAll();
     m.addAttribute("result", alienList);
     return "showAliens";
+  }
+
+  @GetMapping("/getAlienByID")
+  public String getAlienByID(@RequestParam int aid, Model m) {
+    m.addAttribute("alien", alienRepository.findById(aid));
+    return "result";
+  }
+
+  @GetMapping("/getAlienByName")
+  public String getAlienByName(@RequestParam String aname, Model m) {
+    m.addAttribute("alien", alienRepository.find(aname));
+    return "result";
   }
 
   @ModelAttribute
