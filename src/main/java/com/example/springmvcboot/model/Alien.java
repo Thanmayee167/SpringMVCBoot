@@ -1,13 +1,21 @@
 package com.example.springmvcboot.model;
 
-public class Alien 
-{
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
+public class Alien {
+	@Id
 	private int aid;
 	private String aname;
 
-	public Alien(int aid,String aname){
-		this.aid=aid;
-		this.aname=aname;
+	// Default constructor required by JPA
+	public Alien() {
+	}
+
+	public Alien(int aid, String aname) {
+		this.aid = aid;
+		this.aname = aname;
 	}
 	
 	public int getAid() {

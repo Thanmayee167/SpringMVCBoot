@@ -1,8 +1,8 @@
 package com.example.springmvcboot;
 
-import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.springmvcboot.model.Alien;
+import com.example.springmvcboot.repository.AlienRepository;
 
 @Controller
 public class HomeController {
+
+  @Autowired
+  AlienRepository alienRepository;
 
   @GetMapping("/home")
   public String home() {
@@ -31,12 +35,13 @@ public class HomeController {
 
   @GetMapping("/addAlien")
   public String addAlien(@ModelAttribute("alien") Alien a) {
+    alienRepository.save(a);
     return "result";
   }
 
   @GetMapping("/getAliens")
   public String getAliens(Model m) {
-    List<Alien> alienList = Arrays.asList(new Alien(101, "sai"), new Alien(102, "kiran"));
+    List<Alien> alienList = (List<Alien>) alienRepository.findAll();
     m.addAttribute("result", alienList);
     return "showAliens";
   }
