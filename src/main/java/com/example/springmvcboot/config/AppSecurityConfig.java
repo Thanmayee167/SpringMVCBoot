@@ -2,12 +2,12 @@ package com.example.springmvcboot.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -23,26 +23,27 @@ import org.springframework.security.web.SecurityFilterChain;
 public class AppSecurityConfig {
 
     /**
-     * Configures the user details service for authentication.
-     * Creates an in-memory user store with a single user for testing purposes.
+     * Configures the password encoder for the application.
+     * Uses BCrypt password hashing algorithm.
      *
-     * Note: This implementation is for demonstration purposes only.
-     * In a production environment, you should:
-     * - Use a secure password encoder (e.g., BCryptPasswordEncoder)
-     * - Store user credentials in a database
-     * - Implement proper user management
-     *
-     * @return UserDetailsService implementation with an in-memory user store
+     * @return BCryptPasswordEncoder instance
      */
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-        return new InMemoryUserDetailsManager(user);
+    /**
+     * Configures and exposes the authentication manager.
+     * The authentication manager is responsible for processing authentication requests.
+     *
+     * @param authConfig the authentication configuration to use
+     * @return configured AuthenticationManager instance
+     * @throws Exception if there's an error creating the authentication manager
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 
     /**
@@ -53,7 +54,7 @@ public class AppSecurityConfig {
      * - Authorization requirements
      *
      * Current configuration:
-     * - All requests require authentication
+     * - All requests require authentication except user registration
      * - Form-based login is enabled and accessible without authentication
      * - Default Spring Security login form is used
      *
@@ -65,6 +66,7 @@ public class AppSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/api/users/register").permitAll()  // Allow registration without auth
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
