@@ -21,5 +21,10 @@
             </tr>
         </c:forEach>
     </table>
+    <br>
+    <form action="${pageContext.request.contextPath}/home" method="post">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    <input type="submit" value="HOME" />
+    </form>
 </body>
 </html>

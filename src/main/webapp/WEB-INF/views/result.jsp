@@ -10,5 +10,10 @@
 
     <h1>Welcome ${name}</h1>
 	Result is : ${alien}
+	<br>
+	<form action="${pageContext.request.contextPath}/home" method="post">
+        			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        			<input type="submit" value="HOME" />
+    </form>
 </body>
 </html>
